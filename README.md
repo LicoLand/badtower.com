@@ -20,10 +20,10 @@ product release, support, or operation of any Station.
 ## Run
 
 The site is static HTML, CSS, and dependency-free JavaScript with self-hosted
-fonts and artwork; there is no build step. Serve this directory with any
-static HTTP server:
+fonts and artwork; there is no build step. GitHub Pages publishes `docs/` from
+the main branch; serve it locally with any static HTTP server:
 
-    python3 -m http.server 4173
+    python3 -m http.server 4173 --directory docs
 
 Navigation, links, and copy work without JavaScript. The field of towers on
 the home page is drawn by script; its motion follows the reduced-motion
@@ -38,4 +38,7 @@ metadata, crawler files, and the custom-domain binding.
 
 ## Documentation
 
-Start at [docs/README.md](docs/README.md).
+- [Design system](DESIGN.md) records the implemented visual system.
+- [Assets](ASSETS.md) records asset origins and font licenses.
+- [tools/check_site.py](tools/check_site.py) is the single validation entry
+  point.

@@ -86,17 +86,8 @@
           <p>All privileged material lives in a private directory passed with <code>--dir</code>; nothing private is tracked in the repository.</p>
 
           <h2 id="the-go-station">The Go Station binary</h2>
-          <p>Prerequisites: Go 1.26 or newer, a clean checkout, and one strict <code>badtower.station.config.v1</code> file declaring namespace credentials, transport, health, and metrics listeners.</p>
-          <pre><code># validate configuration before starting
-          badtowerctl check-config --config /path/to/badtower.station.v1.json
-
-          # generate a namespace bearer credential (mode 0600 output)
-          badtowerctl credential generate --output /path/to/credential.txt
-
-          # run the service
-          badtower --config /path/to/badtower.station.v1.json</code></pre>
-          <p>Configuration is explicit, bounded, and fail closed: unknown fields, retired data roots, invalid credentials, and non-loopback listeners without explicit allowance stop startup. Credentials are never accepted from argv or environment variables. The default configuration uses loopback listeners and Unix socket transport to prevent accidental public exposure.</p>
-          <p><code>badtowerctl</code> also provides the native RPC harness commands <code>reserve</code>, <code>submit</code>, <code>claim</code>, <code>settle</code>, and <code>capacity</code> against the configured gRPC transport with a mode-0600 credential file.</p>
+          <p>The <a href="https://github.com/LicoLand/BadTower">BadTower repository</a> builds a native Station service declared by one strict <code>badtower.station.config.v1</code> file: namespace credentials, transport, health, and metrics listeners. Configuration is explicit, bounded, and fail closed — unknown fields, retired data roots, and non-loopback listeners without explicit allowance stop startup. Credentials are never accepted from argv or environment variables, and loopback listeners with Unix socket transport are the default, so a fresh build cannot expose itself publicly by accident.</p>
+          <p>Setup and operator commands — configuration validation, credential generation, and the RPC harness — are documented in the <a href="https://github.com/LicoLand/BadTower">BadTower repository</a>.</p>
           <aside class="note">Production operation is the operator's own work: TLS certificates, access controls, process supervision, backups, and resource isolation are not supplied by either repository. No named hosted Station is claimed to be operating.</aside>
 
           <h2 id="verifying-the-source">Verifying the source</h2>

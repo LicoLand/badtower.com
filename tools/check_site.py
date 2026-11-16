@@ -7,9 +7,10 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+SITE = ROOT / "docs"
 ORIGIN = "https://badtower.com"
 SECTIONS = ("station", "contract", "trust", "run", "plugins", "status", "faq")
-PAGES = {"/": ROOT / "index.html", **{f"/{name}/": ROOT / name / "index.html" for name in SECTIONS}}
+PAGES = {"/": SITE / "index.html", **{f"/{name}/": SITE / name / "index.html" for name in SECTIONS}}
 
 
 class Page(HTMLParser):
@@ -47,20 +48,20 @@ def main():
             if re.match(r"^(https?:|mailto:)", link):
                 continue
             target, _, fragment = link.partition("#")
-            if target and target not in PAGES and not (ROOT / target.lstrip("/")).is_file():
+            if target and target not in PAGES and not (SITE / target.lstrip("/")).is_file():
                 failures.append(f"{route}: missing local target {link}")
             if fragment and not target and fragment not in page.ids:
                 failures.append(f"{route}: missing fragment #{fragment}")
 
-    if (ROOT / "CNAME").read_text(encoding="utf-8").strip() != "badtower.com":
+    if (SITE / "CNAME").read_text(encoding="utf-8").strip() != "badtower.com":
         failures.append("CNAME must contain only badtower.com")
-    sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
+    sitemap = (SITE / "sitemap.xml").read_text(encoding="utf-8")
     if re.findall(r"<loc>([^<]+)</loc>", sitemap) != [ORIGIN + route for route in PAGES]:
         failures.append("sitemap.xml must list each canonical page exactly once")
-    robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
+    robots = (SITE / "robots.txt").read_text(encoding="utf-8")
     if f"Sitemap: {ORIGIN}/sitemap.xml" not in robots:
         failures.append("robots.txt must advertise the canonical sitemap")
-    for path in ROOT.glob("*.js"):
+    for path in SITE.glob("*.js"):
         if re.search(r"https?://(?!www\.w3\.org/)", path.read_text(encoding="utf-8")):
             failures.append(f"{path.name}: scripts must not reference external hosts")
 
