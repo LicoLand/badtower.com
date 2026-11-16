@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Where BadTower stands — BadTower</title>
+    <meta name="description" content="Candidate implementation in source, the Native Excellence Gate not accepted, and no release, support, or hosted operation claimed.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://badtower.com/status/">
+    <meta property="og:site_name" content="BadTower">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://badtower.com/status/">
+    <meta property="og:title" content="Where BadTower stands — BadTower">
+    <meta property="og:description" content="Candidate implementation in source, the Native Excellence Gate not accepted, and no release, support, or hosted operation claimed.">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#0b0a08">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="/assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/site.js" defer></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true">
+      <defs>
+        <linearGradient id="star-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d6ff"/><stop offset=".5" stop-color="#bba5fb"/><stop offset="1" stop-color="#9a80ee"/></linearGradient>
+      </defs>
+      <symbol id="star" viewBox="0 0 32 32">
+        <path d="M16 2.6l4 8.6 9.4 1.1-7 6.5 1.8 9.3-8.2-4.6-8.2 4.6 1.8-9.3-7-6.5 9.4-1.1Z" fill="url(#star-fill)" stroke="#8f78e0" stroke-width="1.3" stroke-linejoin="round"/>
+        <ellipse cx="12.4" cy="10.8" rx="3.3" ry="1.8" fill="#fff" opacity=".75" transform="rotate(-30 12.4 10.8)"/>
+      </symbol>
+      <symbol id="go" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-1.700-.500-2.300 3-.300 6-1.400 6-6.400 0-1.300-.400-2.300-1.200-3.200.100-.300.500-1.600-.100-3.100 0 0-1-.300-3.300 1.200a11.500 11.500 0 0 0-6 0C6.600 2.700 5.600 3 5.600 3 5 4.500 5.400 5.800 5.500 6.100c-.800.900-1.200 1.900-1.200 3.200 0 5 3 6.100 6 6.400-.600.600-.600 1.200-.500 2.300v4" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="pause" viewBox="0 0 24 24"><path d="M9 6v12m6-12v12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head">
+      <a class="brand" href="/">BadTower</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="/station/">Station</a>
+        <a href="/contract/">Contract</a>
+        <a href="/trust/">Trust</a>
+        <a href="/run/">Run</a>
+        <a href="/plugins/">Plugins</a>
+        <a href="/status/" aria-current="page">Status</a>
+        <a href="/faq/">FAQ</a>
+        <a class="nav-source" href="https://github.com/LicoLand/BadTower">GitHub<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+      </nav>
+    </header>
+
+    <main id="main" class="doc-shell">
+      <nav class="doc-nav" aria-label="On this page">
+          <a href="#intent">Intent (Go Station)</a>
+          <a href="#implementation">Implementation (Go Station)</a>
+          <a href="#verification">Verification</a>
+          <a href="#release">Release (Go Station)</a>
+          <a href="#support">Support</a>
+          <a href="#badtower-js">BadTower.js</a>
+      </nav>
+      <div>
+        <article class="doc">
+          <h1>Where BadTower stands</h1>
+          <p class="lede">Intent, implementation, verification, release, support, and operation are reported independently. This page condenses the repositories' own status documents; status words are quoted verbatim.</p>
+
+          <h2 id="intent">Intent (Go Station)</h2>
+          <div class="table-wrap"><table>
+          <thead><tr><th>Scope</th><th>Status</th></tr></thead>
+          <tbody>
+          <tr><td>Product shape</td><td>approved goal — one pure protocol-neutral communication Station</td></tr>
+          <tr><td>Native Station Contract</td><td>approved goal — works with no protocol plugin</td></tr>
+          <tr><td>Station Instance</td><td>mandatory first deployment</td></tr>
+          <tr><td>Station Cluster</td><td>approved second deployment, after complete standalone closure</td></tr>
+          <tr><td>Native Excellence Gate</td><td>mandatory prerequisite before extension implementation</td></tr>
+          <tr><td>External Extension Contract</td><td>approved third stage</td></tr>
+          <tr><td>Protocol compatibility</td><td>approved optional stage — external processes, absent by default</td></tr>
+          <tr><td>Endpoint trust</td><td>out of scope</td></tr>
+          <tr><td>Hosted network</td><td>out of scope</td></tr>
+          </tbody>
+          </table></div>
+
+          <h2 id="implementation">Implementation (Go Station)</h2>
+          <div class="table-wrap"><table>
+          <thead><tr><th>Capability</th><th>Status</th></tr></thead>
+          <tbody>
+          <tr><td>Native single-node service, Station Core, native API, <code>badtowerctl</code></td><td>implemented in source (candidate)</td></tr>
+          <tr><td>Signed standard node package</td><td>implemented in source</td></tr>
+          <tr><td>Integrated HTTP relay path</td><td>removed</td></tr>
+          <tr><td>Station Instance acceptance</td><td>implemented in source (candidate); long-profile execution is a separate verification fact</td></tr>
+          <tr><td>Station Cluster</td><td>implemented in source (candidate); formal load and soak evidence open</td></tr>
+          <tr><td>Native Excellence Gate</td><td>not accepted</td></tr>
+          <tr><td>External Extension Contract</td><td>implemented as quarantined candidate source</td></tr>
+          <tr><td>Exact LicoArc Candidate plugin</td><td>implemented as quarantined candidate source</td></tr>
+          <tr><td>A2A, ACP, MCP plugins</td><td>deferred; not implemented</td></tr>
+          <tr><td>Endpoint-product adapter</td><td>rejected</td></tr>
+          <tr><td>Cross-protocol translation</td><td>rejected</td></tr>
+          </tbody>
+          </table></div>
+
+          <h2 id="verification">Verification</h2>
+          <p>Focused race tests verify the deterministic native command machine, partition placement, quorum failure, restart/catch-up, snapshots, mTLS peer admission, membership changes, interrupted rebalance recovery, distributed backup/restore, upgrade preflight, and the Core import firewall. The repository build, ordinary race suite, vet suite, and focused four-node Cluster lifecycle gate pass.</p>
+          <p>The exact Station Instance load gate was exercised but remains below its required 3,000 terminal units/s; the formal Instance soak and Cluster load/soak runs are not recorded as accepted. Consequently Native Excellence and downstream production admission remain open.</p>
+
+          <h2 id="release">Release (Go Station)</h2>
+          <div class="table-wrap"><table>
+          <thead><tr><th>Channel</th><th>Status</th></tr></thead>
+          <tbody>
+          <tr><td>Source tag</td><td>not claimed</td></tr>
+          <tr><td>Binary or package publication</td><td>not claimed</td></tr>
+          <tr><td>Container publication</td><td>not claimed</td></tr>
+          <tr><td>Hosted deployment</td><td>not claimed</td></tr>
+          </tbody>
+          </table></div>
+          <p>The signed standard node package is an implemented and locally verified candidate for the planned <code>0.2.0</code> line. No public package, source tag, release signature, or governed channel publication is claimed; no named hosted Station, Cluster, plugin, or network is claimed operating.</p>
+
+          <h2 id="support">Support</h2>
+          <p>The native Station Contract <code>badtower.station.v1</code> is implemented in source as a candidate only: it has no current publication, compatibility, or hosted support claim. The removed integrated HTTP relay path is unsupported, and Station Core, the completed Station Instance, the Station Cluster, the External Extension Contract, and every protocol plugin have no current support claim. A protocol release elsewhere never promotes BadTower support automatically.</p>
+
+          <h2 id="badtower-js">BadTower.js</h2>
+          <p>BadTower.js is in <strong>pre-1.0 preview</strong>. The native contract and the <code>licoarc.mailbox.v1</code> wire grammar are documented in its API reference; conformance runs through <code>npm run check</code> and the test suite covering mailbox, composition, native, station, and boundary tests. The core is verifiable without the plugin through a core-only synthetic station harness.</p>
+
+          <aside class="note">Implementation in source does not establish verification, release, support, or operation.</aside>
+        </article>
+        <nav class="pager" aria-label="More documentation">
+          <a href="/plugins/"><span>Previous</span><strong>Plugins</strong></a>
+          <a href="/faq/"><span>Next</span><strong>FAQ</strong></a>
+        </nav>
+      </div>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <a class="foot-home" href="https://lico.land/"><svg class="foot-star" aria-hidden="true"><use href="#star"/></svg>LicoLand</a>
+        <nav class="foot-links" aria-label="LicoLand projects">
+          <a href="https://licoup.com/">LicoUp</a>
+          <a href="https://licoarc.com/">LicoArc</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/status/">Status</a>
+        </nav>
+        <p class="foot-note">Public project information only.</p>
+        <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause motion"><svg class="icon" aria-hidden="true"><use href="#pause" id="motion-icon"/></svg></button>
+      </div>
+    </footer>
+  </body>
+</html>

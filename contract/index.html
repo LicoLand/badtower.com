@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Native Station Contract — BadTower</title>
+    <meta name="description" content="Reserve, Submit, Claim, and Settle over opaque Transport Units, plus bounded health, capacity, and graceful shutdown — usable with no plugin.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://badtower.com/contract/">
+    <meta property="og:site_name" content="BadTower">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://badtower.com/contract/">
+    <meta property="og:title" content="The Native Station Contract — BadTower">
+    <meta property="og:description" content="Reserve, Submit, Claim, and Settle over opaque Transport Units, plus bounded health, capacity, and graceful shutdown — usable with no plugin.">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#0b0a08">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="/assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/site.js" defer></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true">
+      <defs>
+        <linearGradient id="star-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d6ff"/><stop offset=".5" stop-color="#bba5fb"/><stop offset="1" stop-color="#9a80ee"/></linearGradient>
+      </defs>
+      <symbol id="star" viewBox="0 0 32 32">
+        <path d="M16 2.6l4 8.6 9.4 1.1-7 6.5 1.8 9.3-8.2-4.6-8.2 4.6 1.8-9.3-7-6.5 9.4-1.1Z" fill="url(#star-fill)" stroke="#8f78e0" stroke-width="1.3" stroke-linejoin="round"/>
+        <ellipse cx="12.4" cy="10.8" rx="3.3" ry="1.8" fill="#fff" opacity=".75" transform="rotate(-30 12.4 10.8)"/>
+      </symbol>
+      <symbol id="go" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-1.700-.500-2.300 3-.300 6-1.400 6-6.400 0-1.300-.400-2.300-1.200-3.200.100-.300.500-1.600-.100-3.100 0 0-1-.300-3.300 1.200a11.500 11.500 0 0 0-6 0C6.600 2.700 5.600 3 5.600 3 5 4.500 5.400 5.800 5.500 6.100c-.800.900-1.200 1.900-1.200 3.200 0 5 3 6.100 6 6.400-.600.600-.600 1.200-.500 2.300v4" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="pause" viewBox="0 0 24 24"><path d="M9 6v12m6-12v12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head">
+      <a class="brand" href="/">BadTower</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="/station/">Station</a>
+        <a href="/contract/" aria-current="page">Contract</a>
+        <a href="/trust/">Trust</a>
+        <a href="/run/">Run</a>
+        <a href="/plugins/">Plugins</a>
+        <a href="/status/">Status</a>
+        <a href="/faq/">FAQ</a>
+        <a class="nav-source" href="https://github.com/LicoLand/BadTower">GitHub<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+      </nav>
+    </header>
+
+    <main id="main" class="doc-shell">
+      <nav class="doc-nav" aria-label="On this page">
+          <a href="#reserve">Reserve</a>
+          <a href="#submit">Submit</a>
+          <a href="#claim">Claim</a>
+          <a href="#settle">Settle</a>
+          <a href="#health-capacity-shutdown">Health, capacity, and shutdown</a>
+          <a href="#native-binding">The BadTower.js native HTTP binding</a>
+          <a href="#failure-semantics">Failure semantics</a>
+      </nav>
+      <div>
+        <article class="doc">
+          <h1>Four verbs and a capacity answer</h1>
+          <p class="lede">The Native Station Contract is the versioned, protocol-neutral BadTower service contract: Reserve, Submit, Claim, Settle, health, capacity, and graceful shutdown. It is directly usable with no protocol plugin.</p>
+
+          <h2 id="reserve">Reserve — one opaque Station Address</h2>
+          <p>Reserve allocates or renews one opaque Station Address inside a Station Namespace: an opaque, bounded-lifetime destination token that is not an endpoint identity, agent address, or proof of ownership. The caller supplies a request identifier and a lifetime; identifiers must match the native ID patterns enforced by the contract.</p>
+
+          <h2 id="submit">Submit — opaque Transport Units under expiry and idempotency</h2>
+          <p>Submit stores one opaque Transport Unit for a Station Address under explicit expiry and idempotency. A Transport Unit is opaque bytes plus fixed native metadata for unit identity, destination, expiry, size, idempotency, and bounded carriage; the Core never interprets the bytes. In the Go implementation, submission writes the immutable payload and its mutable delivery metadata exactly once in one synchronous atomic batch.</p>
+
+          <h2 id="claim">Claim — a bounded ordered batch</h2>
+          <p>Claim takes a bounded, ordered batch of eligible Transport Units under an expiring Delivery Claim. A Delivery Claim is time- and count-bounded and bound to a monotonic ownership epoch, so stale work cannot commit after transfer or restart. In BadTower.js the same idea is simpler: delivery is at-least-once with a 16-packet in-flight window, and claimed-but-unsettled packets replay in sequence order on the next claim — the caller passes its in-flight sequences as an exclude list.</p>
+
+          <h2 id="settle">Settle — complete or release</h2>
+          <p>Settle is an idempotent native instruction to complete or release currently claimed Transport Units, producing a deterministic Settlement Record. In BadTower.js, settle deletes the stored packets; revocation deletes everything and makes the mailbox unable to bind again.</p>
+          <aside class="note">The two implementations disagree on expiry: the Go contract submits units under explicit expiry and reclaims expired state incrementally, while BadTower.js stores undelivered packets permanently — a stored packet leaves only on the recipient's settle or on revocation.</aside>
+
+          <h2 id="health-capacity-shutdown">Health, capacity, and shutdown</h2>
+          <p>The contract also owns bounded health, capacity, and graceful-shutdown behavior. The Go Station answers standard <code>grpc.health.v1</code> probes and <code>GetCapacity</code>; readiness falls before drain, new Reserve/Submit/Claim calls stop during drain, and Settle remains available for a bounded window. BadTower.js exposes an unauthenticated <code>/healthz</code> liveness route and a <code>GET /v1/native/capacity</code> endpoint returning capacity and stored-byte counts.</p>
+
+          <h2 id="native-binding">The BadTower.js native HTTP binding</h2>
+          <p>BadTower.js serves the contract over HTTPS at fixed paths with a bearer admission credential:</p>
+          <pre><code>Authorization: Bearer btm1.&lt;…&gt;
+          POST /v1/native/reserve   — bind the mailbox to one opaque subject
+          POST /v1/native/submit    — handle(32) ‖ packet, routes by the handle
+          POST /v1/native/claim     — replay ordered units, excluding in-flight
+          POST /v1/native/settle    — delete settled packets
+          GET  /v1/native/capacity  — capacityBytes ‖ databaseBytes
+          POST /v1/revoke           — offline-HMAC revocation, idempotent
+          GET  /healthz             — unauthenticated liveness</code></pre>
+          <p>Bodies are <code>application/octet-stream</code>; no response carries error text. The Go binding is gRPC service <code>badtower.station.v1.Station</code> over TLS 1.3 with ALPN <code>h2</code>, or a mode-0600 Unix socket, with bearer credentials on every data-plane RPC.</p>
+
+          <h2 id="failure-semantics">Failure semantics</h2>
+          <p>The native candidate fails closed on invalid configuration, retired data roots, unknown store identity, authentication failure, malformed IDs, quota and capacity exhaustion, stale claim epochs, expired addresses and units, clock-unsafe conditions, and overload. Failures map to the closed <code>StationFailure</code> taxonomy and the gRPC status codes defined by the native contract; an unknown service or version returns <code>UNIMPLEMENTED</code>. In BadTower.js, submit outcomes are explicit: accepted, rejected, or transient, with a small fixed set of reason classes.</p>
+        </article>
+        <nav class="pager" aria-label="More documentation">
+          <a href="/station/"><span>Previous</span><strong>Station</strong></a>
+          <a href="/trust/"><span>Next</span><strong>Trust</strong></a>
+        </nav>
+      </div>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <a class="foot-home" href="https://lico.land/"><svg class="foot-star" aria-hidden="true"><use href="#star"/></svg>LicoLand</a>
+        <nav class="foot-links" aria-label="LicoLand projects">
+          <a href="https://licoup.com/">LicoUp</a>
+          <a href="https://licoarc.com/">LicoArc</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/status/">Status</a>
+        </nav>
+        <p class="foot-note">Public project information only.</p>
+        <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause motion"><svg class="icon" aria-hidden="true"><use href="#pause" id="motion-icon"/></svg></button>
+      </div>
+    </footer>
+  </body>
+</html>

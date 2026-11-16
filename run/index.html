@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Run a Station — BadTower</title>
+    <meta name="description" content="Deploy BadTower.js on Cloudflare Workers or in a container, or run the Go Station binary under a strict fail-closed configuration file.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://badtower.com/run/">
+    <meta property="og:site_name" content="BadTower">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://badtower.com/run/">
+    <meta property="og:title" content="Run a Station — BadTower">
+    <meta property="og:description" content="Deploy BadTower.js on Cloudflare Workers or in a container, or run the Go Station binary under a strict fail-closed configuration file.">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#0b0a08">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="/assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/site.js" defer></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true">
+      <defs>
+        <linearGradient id="star-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d6ff"/><stop offset=".5" stop-color="#bba5fb"/><stop offset="1" stop-color="#9a80ee"/></linearGradient>
+      </defs>
+      <symbol id="star" viewBox="0 0 32 32">
+        <path d="M16 2.6l4 8.6 9.4 1.1-7 6.5 1.8 9.3-8.2-4.6-8.2 4.6 1.8-9.3-7-6.5 9.4-1.1Z" fill="url(#star-fill)" stroke="#8f78e0" stroke-width="1.3" stroke-linejoin="round"/>
+        <ellipse cx="12.4" cy="10.8" rx="3.3" ry="1.8" fill="#fff" opacity=".75" transform="rotate(-30 12.4 10.8)"/>
+      </symbol>
+      <symbol id="go" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-1.700-.500-2.300 3-.300 6-1.400 6-6.400 0-1.300-.400-2.300-1.200-3.200.100-.300.500-1.600-.100-3.100 0 0-1-.300-3.300 1.200a11.500 11.500 0 0 0-6 0C6.600 2.700 5.600 3 5.600 3 5 4.500 5.400 5.800 5.500 6.100c-.800.900-1.200 1.900-1.200 3.200 0 5 3 6.100 6 6.400-.600.600-.600 1.200-.500 2.300v4" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="pause" viewBox="0 0 24 24"><path d="M9 6v12m6-12v12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head">
+      <a class="brand" href="/">BadTower</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="/station/">Station</a>
+        <a href="/contract/">Contract</a>
+        <a href="/trust/">Trust</a>
+        <a href="/run/" aria-current="page">Run</a>
+        <a href="/plugins/">Plugins</a>
+        <a href="/status/">Status</a>
+        <a href="/faq/">FAQ</a>
+        <a class="nav-source" href="https://github.com/LicoLand/BadTower">GitHub<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+      </nav>
+    </header>
+
+    <main id="main" class="doc-shell">
+      <nav class="doc-nav" aria-label="On this page">
+          <a href="#badtower-js-on-workers">BadTower.js on Cloudflare Workers</a>
+          <a href="#station-commands">The station operator commands</a>
+          <a href="#the-go-station">The Go Station binary</a>
+          <a href="#verifying-the-source">Verifying the source</a>
+      </nav>
+      <div>
+        <article class="doc">
+          <h1>Two ways to run a Station</h1>
+          <p class="lede">BadTower.js deploys a permanent-mailbox Station on Cloudflare Workers or a self-hosted container. The Go repository builds a native Station service around a strict configuration file. Both keep private operator material outside the repository.</p>
+
+          <h2 id="badtower-js-on-workers">BadTower.js on Cloudflare Workers</h2>
+          <p>Deploy with three steps:</p>
+          <pre><code>npm ci
+          npm run station -- init --dir &lt;private-dir&gt;
+          npm run station -- cloudflare-deploy --dir &lt;private-dir&gt; [--domain &lt;name&gt;]</code></pre>
+          <p><code>init</code> creates the 32-byte station key and <code>.dev.vars</code> in your private directory; <code>cloudflare-deploy</code> uploads that key as the <code>BADTOWER_STATION_KEY</code> secret and deploys the Worker in one step, using your existing wrangler login. A Deploy to Cloudflare Workers button offers the same flow and requires the same secret.</p>
+          <p>Self-hosted is a container path: <code>docker-deploy</code> builds the image on the operator machine for the remote daemon's architecture, streams it over SSH, and runs <code>docker compose up</code> with only compose file, a generated <code>.env</code>, and the secrets — the remote needs Docker only.</p>
+
+          <h2 id="station-commands">The <code>station</code> operator commands</h2>
+          <div class="table-wrap"><table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+          <tr><td><code>init</code></td><td>Creates <code>station.key</code> (32-byte base64url, mode 0600) and <code>.dev.vars</code>; refuses to overwrite.</td></tr>
+          <tr><td><code>invite</code></td><td>Mints a random mailbox id and a <code>btm1</code> credential bound to it; <code>--bind-within</code> caps only the first binding.</td></tr>
+          <tr><td><code>revoke</code></td><td>Sends an offline-HMAC revocation body to <code>/v1/revoke</code>: packets are deleted and the mailbox can never bind again.</td></tr>
+          <tr><td><code>tls</code></td><td>Creates a private CA and server certificate under <code>&lt;dir&gt;/tls/</code> for self-hosted HTTPS.</td></tr>
+          <tr><td><code>cloudflare-deploy</code></td><td>Deploys the Worker, uploading secrets from file rather than argv.</td></tr>
+          <tr><td><code>docker-deploy</code></td><td>Builds, streams, and starts the self-hosted container on a remote Docker host.</td></tr>
+          <tr><td><code>health</code></td><td>Checks a Station's health endpoint.</td></tr>
+          </tbody>
+          </table></div>
+          <p>All privileged material lives in a private directory passed with <code>--dir</code>; nothing private is tracked in the repository.</p>
+
+          <h2 id="the-go-station">The Go Station binary</h2>
+          <p>Prerequisites: Go 1.26 or newer, a clean checkout, and one strict <code>badtower.station.config.v1</code> file declaring namespace credentials, transport, health, and metrics listeners.</p>
+          <pre><code># validate configuration before starting
+          badtowerctl check-config --config /path/to/badtower.station.v1.json
+
+          # generate a namespace bearer credential (mode 0600 output)
+          badtowerctl credential generate --output /path/to/credential.txt
+
+          # run the service
+          badtower --config /path/to/badtower.station.v1.json</code></pre>
+          <p>Configuration is explicit, bounded, and fail closed: unknown fields, retired data roots, invalid credentials, and non-loopback listeners without explicit allowance stop startup. Credentials are never accepted from argv or environment variables. The default configuration uses loopback listeners and Unix socket transport to prevent accidental public exposure.</p>
+          <p><code>badtowerctl</code> also provides the native RPC harness commands <code>reserve</code>, <code>submit</code>, <code>claim</code>, <code>settle</code>, and <code>capacity</code> against the configured gRPC transport with a mode-0600 credential file.</p>
+          <aside class="note">Production operation is the operator's own work: TLS certificates, access controls, process supervision, backups, and resource isolation are not supplied by either repository. No named hosted Station is claimed to be operating.</aside>
+
+          <h2 id="verifying-the-source">Verifying the source</h2>
+          <p>The Go repository's routine closure is <code>go test -race ./...</code>, <code>go vet ./...</code>, <code>go build ./...</code>, and a clean <code>gofmt -l</code>. BadTower.js runs <code>npm run check</code>: typecheck, script lint, generated-type check, vitest, and a wrangler dry-run.</p>
+        </article>
+        <nav class="pager" aria-label="More documentation">
+          <a href="/trust/"><span>Previous</span><strong>Trust</strong></a>
+          <a href="/plugins/"><span>Next</span><strong>Plugins</strong></a>
+        </nav>
+      </div>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <a class="foot-home" href="https://lico.land/"><svg class="foot-star" aria-hidden="true"><use href="#star"/></svg>LicoLand</a>
+        <nav class="foot-links" aria-label="LicoLand projects">
+          <a href="https://licoup.com/">LicoUp</a>
+          <a href="https://licoarc.com/">LicoArc</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/status/">Status</a>
+        </nav>
+        <p class="foot-note">Public project information only.</p>
+        <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause motion"><svg class="icon" aria-hidden="true"><use href="#pause" id="motion-icon"/></svg></button>
+      </div>
+    </footer>
+  </body>
+</html>

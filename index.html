@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BadTower — A protocol-neutral communication Station, untrusted by design</title>
+    <meta name="description" content="BadTower is one pure, protocol-neutral communication Station. It moves opaque Transport Units between endpoints and stays untrusted by design.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://badtower.com/">
+    <meta property="og:site_name" content="BadTower">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://badtower.com/">
+    <meta property="og:title" content="BadTower — A protocol-neutral communication Station, untrusted by design">
+    <meta property="og:description" content="BadTower is one pure, protocol-neutral communication Station. It moves opaque Transport Units between endpoints and stays untrusted by design.">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#0b0a08">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="/assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/net.js" defer></script>
+    <script src="/site.js" defer></script>
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@graph": [
+      {"@type": "WebSite", "@id": "https://badtower.com/#website", "url": "https://badtower.com/", "name": "BadTower", "description": "BadTower is one pure, protocol-neutral communication Station. It moves opaque Transport Units between endpoints and stays untrusted by design.", "publisher": {"@id": "https://lico.land/#organization"}},
+      {"@type": "SoftwareSourceCode", "name": "BadTower", "codeRepository": "https://github.com/LicoLand/BadTower", "license": "https://www.gnu.org/licenses/agpl-3.0.html", "programmingLanguage": "Go", "description": "A protocol-neutral communication Station that carries opaque Transport Units and is untrusted by design."}
+    ]}
+    </script>
+  </head>
+  <body class="home">
+    <svg class="sprite" aria-hidden="true">
+      <defs>
+        <linearGradient id="star-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d6ff"/><stop offset=".5" stop-color="#bba5fb"/><stop offset="1" stop-color="#9a80ee"/></linearGradient>
+      </defs>
+      <symbol id="star" viewBox="0 0 32 32">
+        <path d="M16 2.6l4 8.6 9.4 1.1-7 6.5 1.8 9.3-8.2-4.6-8.2 4.6 1.8-9.3-7-6.5 9.4-1.1Z" fill="url(#star-fill)" stroke="#8f78e0" stroke-width="1.3" stroke-linejoin="round"/>
+        <ellipse cx="12.4" cy="10.8" rx="3.3" ry="1.8" fill="#fff" opacity=".75" transform="rotate(-30 12.4 10.8)"/>
+      </symbol>
+      <symbol id="go" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-1.700-.500-2.300 3-.300 6-1.400 6-6.400 0-1.300-.400-2.300-1.200-3.200.100-.300.500-1.600-.100-3.100 0 0-1-.300-3.300 1.200a11.500 11.500 0 0 0-6 0C6.600 2.700 5.600 3 5.600 3 5 4.500 5.400 5.800 5.500 6.100c-.800.900-1.200 1.900-1.200 3.200 0 5 3 6.100 6 6.400-.600.600-.600 1.200-.500 2.300v4" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="pause" viewBox="0 0 24 24"><path d="M9 6v12m6-12v12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head">
+      <a class="brand" href="/">BadTower</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="/station/">Station</a>
+        <a href="/contract/">Contract</a>
+        <a href="/trust/">Trust</a>
+        <a href="/run/">Run</a>
+        <a href="/plugins/">Plugins</a>
+        <a href="/status/">Status</a>
+        <a href="/faq/">FAQ</a>
+        <a class="nav-source" href="https://github.com/LicoLand/BadTower">GitHub<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <canvas id="net" aria-hidden="true"></canvas>
+        <div class="hero-copy">
+          <h1 id="hero-title">It carries.<br>It never reads.</h1>
+          <p class="hero-line">BadTower is one pure, protocol-neutral communication Station. It moves opaque Transport Units between endpoints and stays untrusted by design.</p>
+          <div class="actions">
+            <a class="button button-gold" href="/station/">Read the docs<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+            <a class="button button-quiet" href="https://github.com/LicoLand/BadTower"><svg class="icon" aria-hidden="true"><use href="#github"/></svg>View on GitHub</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="tiers" aria-labelledby="tiers-title">
+        <div class="section-head">
+          <h2 id="tiers-title">Four verbs. One contract.</h2>
+          <p>The Native Station Contract works with no protocol plugin and carries no external protocol semantics. It also owns bounded health, capacity, and graceful shutdown.</p>
+        </div>
+        <ol class="tier-stack">
+          <li class="tier"><h3>Reserve</h3><p>Reserve or renew one opaque Station Address.</p></li>
+          <li class="tier"><h3>Submit</h3><p>Submit one opaque Transport Unit under explicit expiry and idempotency.</p></li>
+          <li class="tier"><h3>Claim</h3><p>Claim a bounded, ordered batch under an expiring Delivery Claim.</p></li>
+          <li class="tier"><h3>Settle</h3><p>Settle claimed units with deterministic complete or release behavior.</p></li>
+          <li class="parcel" aria-hidden="true"><b></b></li>
+        </ol>
+        <a class="more" href="/contract/">The Native Station Contract<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+      </section>
+
+      <section class="trust" id="trust" aria-labelledby="trust-title">
+        <div class="trust-inner">
+          <div>
+            <h2 id="trust-title">Bad by design.</h2>
+            <p class="trust-lede">A Station is untrusted infrastructure. Every endpoint treats its signals according to its own trust model.</p>
+            <a class="more more-light" href="/trust/">Why you should not trust the tower<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+          </div>
+          <div>
+            <p class="never-label">A Station Signal never proves</p>
+            <ul class="never">
+              <li>peer identity</li><li>authenticity</li><li>integrity</li><li>freshness</li><li>replay rejection</li><li>user approval</li><li>endpoint receipt</li><li>task completion</li><li>tool effect</li><li>business acknowledgement</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="order" aria-labelledby="order-title">
+        <div class="section-head">
+          <h2 id="order-title">Built from the ground up, in order.</h2>
+          <p>Later stages cannot repair or redefine unfinished native behavior, and a plugin is never a prerequisite for the stages before it.</p>
+        </div>
+        <ol class="floors">
+          <li><h3>Station Core</h3><p>The protocol-neutral core and its native contract.</p></li>
+          <li><h3>Station Instance</h3><p>One standalone, durable, recoverable, packaged, observable Station.</p></li>
+          <li><h3>Station Cluster</h3><p>The same native contract across replaceable members.</p></li>
+          <li><h3>Extension contract</h3><p>A separately packaged boundary for external processes.</p></li>
+          <li><h3>Protocol plugins</h3><p>Explicitly selected, independent, absent by default.</p></li>
+        </ol>
+        <a class="more" href="/status/">Where each stage stands today<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+      </section>
+
+      <section class="plugins" aria-labelledby="plugins-title">
+        <div class="plugins-inner">
+          <div class="section-head">
+            <h2 id="plugins-title">Protocols stay outside the tower.</h2>
+            <p>LicoArc, A2A, ACP, and MCP are optional external plugin plans, not Core features. Each plugin is its own process with its own listener, state, budget, and release. The Core never discovers, loads, embeds, or supervises one.</p>
+            <a class="more" href="/plugins/">How plugins attach<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+          </div>
+          <ul class="lines">
+            <li><strong>LicoArc</strong><span>Quarantined candidate source</span></li>
+            <li><strong>A2A</strong><span>Deferred; not implemented</span></li>
+            <li><strong>ACP</strong><span>Deferred; not implemented</span></li>
+            <li><strong>MCP</strong><span>Deferred; not implemented</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="run" id="run" aria-labelledby="run-title">
+        <div class="run-inner">
+          <div class="section-head">
+            <h2 id="run-title">Run your own.</h2>
+            <p>Two implementations of the Station, both open source under AGPL-3.0. Neither claims a release, hosted deployment, or support; the status page records what exists today.</p>
+          </div>
+          <div class="ways">
+            <article class="way">
+              <h3>BadTower</h3>
+              <p>The native Station in Go: gRPC Station, health, and metrics from strict configuration.</p>
+              <pre><code>badtower --config /path/to/badtower.station.v1.json</code></pre>
+              <a class="more" href="https://github.com/LicoLand/BadTower">LicoLand/BadTower<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+            </article>
+            <article class="way">
+              <h3>BadTower.js</h3>
+              <p>An invitation-gated opaque mailbox relay on Cloudflare Workers.</p>
+              <pre><code>npm ci
+npm run station -- init --dir &lt;private-dir&gt;
+npm run station -- cloudflare-deploy --dir &lt;private-dir&gt;</code></pre>
+              <a class="more" href="https://github.com/LicoLand/BadTower.js">LicoLand/BadTower.js<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+            </article>
+          </div>
+          <a class="button button-gold" href="/run/">Run a Station<svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <a class="foot-home" href="https://lico.land/"><svg class="foot-star" aria-hidden="true"><use href="#star"/></svg>LicoLand</a>
+        <nav class="foot-links" aria-label="LicoLand projects">
+          <a href="https://licoup.com/">LicoUp</a>
+          <a href="https://licoarc.com/">LicoArc</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/status/">Status</a>
+        </nav>
+        <p class="foot-note">Public project information only.</p>
+        <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause motion"><svg class="icon" aria-hidden="true"><use href="#pause" id="motion-icon"/></svg></button>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+# Build output
+build/
+build-*/
+dist/
+out/
+coverage/
+.cache/
+*.log
+*.tmp
+
+# Temporary reports and plans
+docs/plans/
+docs/reports/
+tmp/
+
+# Secrets
+.env
+.env.*
+.env.local
+!.env.example
+
+# Operating system and editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+
+# Dependency and interpreter state
+node_modules/
+__pycache__/
+*.py[cod]

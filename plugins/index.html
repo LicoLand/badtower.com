@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Protocol plugins live outside the tower — BadTower</title>
+    <meta name="description" content="Protocol Compatibility Plugins are external processes with their own listeners, state, and budgets. The Core never loads or supervises them.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://badtower.com/plugins/">
+    <meta property="og:site_name" content="BadTower">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://badtower.com/plugins/">
+    <meta property="og:title" content="Protocol plugins live outside the tower — BadTower">
+    <meta property="og:description" content="Protocol Compatibility Plugins are external processes with their own listeners, state, and budgets. The Core never loads or supervises them.">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#0b0a08">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="/assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/site.js" defer></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true">
+      <defs>
+        <linearGradient id="star-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d6ff"/><stop offset=".5" stop-color="#bba5fb"/><stop offset="1" stop-color="#9a80ee"/></linearGradient>
+      </defs>
+      <symbol id="star" viewBox="0 0 32 32">
+        <path d="M16 2.6l4 8.6 9.4 1.1-7 6.5 1.8 9.3-8.2-4.6-8.2 4.6 1.8-9.3-7-6.5 9.4-1.1Z" fill="url(#star-fill)" stroke="#8f78e0" stroke-width="1.3" stroke-linejoin="round"/>
+        <ellipse cx="12.4" cy="10.8" rx="3.3" ry="1.8" fill="#fff" opacity=".75" transform="rotate(-30 12.4 10.8)"/>
+      </symbol>
+      <symbol id="go" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-1.700-.500-2.300 3-.300 6-1.400 6-6.400 0-1.300-.400-2.300-1.200-3.200.100-.300.500-1.600-.100-3.100 0 0-1-.300-3.300 1.200a11.500 11.500 0 0 0-6 0C6.600 2.700 5.600 3 5.600 3 5 4.500 5.400 5.800 5.500 6.100c-.800.900-1.200 1.900-1.200 3.200 0 5 3 6.100 6 6.400-.600.600-.600 1.200-.500 2.300v4" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="pause" viewBox="0 0 24 24"><path d="M9 6v12m6-12v12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head">
+      <a class="brand" href="/">BadTower</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="/station/">Station</a>
+        <a href="/contract/">Contract</a>
+        <a href="/trust/">Trust</a>
+        <a href="/run/">Run</a>
+        <a href="/plugins/" aria-current="page">Plugins</a>
+        <a href="/status/">Status</a>
+        <a href="/faq/">FAQ</a>
+        <a class="nav-source" href="https://github.com/LicoLand/BadTower">GitHub<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+      </nav>
+    </header>
+
+    <main id="main" class="doc-shell">
+      <nav class="doc-nav" aria-label="On this page">
+          <a href="#the-external-process-model">The external-process model</a>
+          <a href="#licoarc">The LicoArc plugin, in both repositories</a>
+          <a href="#a2a-acp-mcp">A2A, ACP, and MCP are plans, not features</a>
+          <a href="#no-translation">Cross-protocol translation is rejected</a>
+      </nav>
+      <div>
+        <article class="doc">
+          <h1>Protocol plugins live outside the tower</h1>
+          <p class="lede">A Protocol Compatibility Plugin is an optional external process that implements one exact external protocol contract and maps it to the Native Station Contract. The Station Core remains complete and useful when every plugin is absent.</p>
+
+          <h2 id="the-external-process-model">The external-process model</h2>
+          <p>Each plugin is separately built, packaged, configured, supervised, versioned, released, supported, and operated, with its own listener, protocol code, optional bounded state, resource budget, metrics, and tests. The Core never discovers, loads, embeds, or supervises plugins; a deployment supervisor owns each plugin process, and the plugin connects as an ordinary scoped native caller.</p>
+          <ul>
+          <li>Core never scans for or loads plugin code, hosts an in-process extension API, registers external protocol names, supervises plugin processes, or stores plugin-specific state.</li>
+          <li>Adding, removing, crashing, saturating, upgrading, rolling back, or retiring one plugin cannot change the Core artifact, the native contract, the persisted schema, or another plugin.</li>
+          <li>A plugin requirement cannot widen the native contract unless the capability independently serves direct native clients and passes Core acceptance.</li>
+          <li>If a protocol feature cannot map safely to the fixed native contract, the plugin owns the missing behavior or rejects support — it cannot make Core protocol-aware.</li>
+          </ul>
+
+          <h2 id="licoarc">The LicoArc plugin, in both repositories</h2>
+          <p>In the Go repository, an exact LicoArc Candidate adapter exists as separately built, quarantined candidate source: one process (<code>badtower-licoarc-candidate</code>) that pins one Candidate Protocol Line and transport digest, accepts only HTTP/2 over TLS 1.3 with deterministic closed-CBOR control maps and unchanged raw protected-packet bodies, and maps AFFILIATE, RESERVE, SUBMIT, RETRIEVE, CLAIM, and SETTLE through one scoped native gRPC caller. Its state, signer, configuration, and package are its own.</p>
+          <p>In BadTower.js, the <code>licoarc.mailbox.v1</code> WebSocket listener is a replaceable compatibility plugin: it owns its route, subprotocol check, canonical CBOR frame codec, Ed25519 device-key handshake, and close codes, and drives the core store API without reaching beneath it.</p>
+          <p>BadTower alone owns any LicoArc adaptation it admits. LicoArc develops and verifies its Protocol Layer independently and owes BadTower no adapter, fixture, test, package, release, support, runner, or receipt.</p>
+          <aside class="note">Neither LicoArc surface is production-admitted today: the Go adapter waits on the open Native Excellence Gate, and the BadTower.js listener ships inside a pre-1.0 preview.</aside>
+
+          <h2 id="a2a-acp-mcp">A2A, ACP, and MCP are plans, not features</h2>
+          <p>The approved optional plugin plan set names a BadTower-owned LicoArc plugin, an A2A plugin, an independently admitted ACP plugin, and an MCP plugin. A2A and ACP remain distinct plugins even though the ACP project has joined A2A: no shared process, listener, configuration, state, adapter, alias, migration, or lifecycle. All three are deferred and not implemented in the Go repository.</p>
+
+          <h2 id="no-translation">Cross-protocol translation is rejected</h2>
+          <p>No implicit translation or shared protocol state belongs in the Core or between plugins. Each admitted plugin maps exactly one pinned external contract; there is no generic protocol bridge.</p>
+        </article>
+        <nav class="pager" aria-label="More documentation">
+          <a href="/run/"><span>Previous</span><strong>Run</strong></a>
+          <a href="/status/"><span>Next</span><strong>Status</strong></a>
+        </nav>
+      </div>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <a class="foot-home" href="https://lico.land/"><svg class="foot-star" aria-hidden="true"><use href="#star"/></svg>LicoLand</a>
+        <nav class="foot-links" aria-label="LicoLand projects">
+          <a href="https://licoup.com/">LicoUp</a>
+          <a href="https://licoarc.com/">LicoArc</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/status/">Status</a>
+        </nav>
+        <p class="foot-note">Public project information only.</p>
+        <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause motion"><svg class="icon" aria-hidden="true"><use href="#pause" id="motion-icon"/></svg></button>
+      </div>
+    </footer>
+  </body>
+</html>

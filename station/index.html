@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What a Station is — BadTower</title>
+    <meta name="description" content="BadTower is LicoLand&#x27;s Service Layer: one pure, protocol-neutral communication Station. Its native communication capability is the product.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://badtower.com/station/">
+    <meta property="og:site_name" content="BadTower">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://badtower.com/station/">
+    <meta property="og:title" content="What a Station is — BadTower">
+    <meta property="og:description" content="BadTower is LicoLand&#x27;s Service Layer: one pure, protocol-neutral communication Station. Its native communication capability is the product.">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#0b0a08">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="/assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/site.js" defer></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true">
+      <defs>
+        <linearGradient id="star-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2d6ff"/><stop offset=".5" stop-color="#bba5fb"/><stop offset="1" stop-color="#9a80ee"/></linearGradient>
+      </defs>
+      <symbol id="star" viewBox="0 0 32 32">
+        <path d="M16 2.6l4 8.6 9.4 1.1-7 6.5 1.8 9.3-8.2-4.6-8.2 4.6 1.8-9.3-7-6.5 9.4-1.1Z" fill="url(#star-fill)" stroke="#8f78e0" stroke-width="1.3" stroke-linejoin="round"/>
+        <ellipse cx="12.4" cy="10.8" rx="3.3" ry="1.8" fill="#fff" opacity=".75" transform="rotate(-30 12.4 10.8)"/>
+      </symbol>
+      <symbol id="go" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="github" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-1.700-.500-2.300 3-.300 6-1.400 6-6.400 0-1.300-.400-2.300-1.200-3.200.100-.300.500-1.600-.100-3.100 0 0-1-.300-3.300 1.200a11.500 11.500 0 0 0-6 0C6.600 2.700 5.600 3 5.600 3 5 4.500 5.400 5.800 5.500 6.100c-.800.900-1.200 1.900-1.200 3.200 0 5 3 6.100 6 6.400-.600.600-.600 1.200-.500 2.300v4" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="pause" viewBox="0 0 24 24"><path d="M9 6v12m6-12v12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></symbol>
+    </svg>
+
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head">
+      <a class="brand" href="/">BadTower</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="/station/" aria-current="page">Station</a>
+        <a href="/contract/">Contract</a>
+        <a href="/trust/">Trust</a>
+        <a href="/run/">Run</a>
+        <a href="/plugins/">Plugins</a>
+        <a href="/status/">Status</a>
+        <a href="/faq/">FAQ</a>
+        <a class="nav-source" href="https://github.com/LicoLand/BadTower">GitHub<svg class="icon" aria-hidden="true"><use href="#go"/></svg></a>
+      </nav>
+    </header>
+
+    <main id="main" class="doc-shell">
+      <nav class="doc-nav" aria-label="On this page">
+          <a href="#what-a-station-is">What a Station is</a>
+          <a href="#core-ownership">Station Core owns the station, not the meaning</a>
+          <a href="#instance-before-cluster">Instance first, Cluster later</a>
+          <a href="#deliberately-not">What a Station deliberately is not</a>
+      </nav>
+      <div>
+        <article class="doc">
+          <h1>A Station carries opaque bytes and nothing else</h1>
+          <p class="lede">BadTower is LicoLand's Service Layer: one pure, protocol-neutral communication Station. Its native communication capability is the product.</p>
+
+          <h2 id="what-a-station-is">What a Station is</h2>
+          <p>A Station is one logical, independently operated BadTower Service Layer boundary. It is realized by one Station Instance or, after separate implementation and verification, by one Station Cluster. Clients and endpoints use it to move opaque Transport Units between opaque Station Addresses, under a small versioned contract.</p>
+          <dl>
+          <dt>Service Layer</dt><dd>The organizational layer owned by BadTower. It provides native, bounded communication-station behavior and infrastructure; external protocol meaning and endpoint trust remain outside it.</dd>
+          <dt>Station Core</dt><dd>The single BadTower runtime that directly implements the Native Station Contract, durable opaque transport, scheduling, pressure control, health, packaging, and one-member or multi-member Station behavior.</dd>
+          <dt>Native Station Contract</dt><dd>The versioned, protocol-neutral service contract for Reserve, Submit, Claim, Settle, health, capacity, and graceful shutdown. It is directly usable without a protocol plugin.</dd>
+          <dt>Station Instance</dt><dd>One independently startable, durable, recoverable, packaged, observable, and performant Station Core node, with no cluster coordinator and no required plugin.</dd>
+          <dt>Station Cluster</dt><dd>The deferred multi-node deployment of one logical Station: multiple replaceable Core members adding membership, placement, replication, consistency, fencing, failover, repair, rebalance, horizontal change, and disaster recovery.</dd>
+          <dt>Station Namespace</dt><dd>A bounded native caller scope for authorization, resource accounting, state, and observation. It carries no protocol identity or semantics.</dd>
+          <dt>Station Address</dt><dd>An opaque, bounded-lifetime destination token inside one Station Namespace — not an endpoint identity, agent address, or proof of ownership.</dd>
+          <dt>Transport Unit</dt><dd>Opaque bytes plus fixed native metadata for unit identity, destination, expiry, size, idempotency, and bounded carriage. The Core does not interpret the bytes.</dd>
+          <dt>Delivery Claim</dt><dd>A time- and count-bounded claim over eligible Transport Units, bound to a monotonic ownership epoch.</dd>
+          <dt>Settlement Record</dt><dd>The result of an idempotent native instruction to complete or release currently claimed Transport Units.</dd>
+          <dt>Station Signal</dt><dd>Any reservation result, admission result, claim, time, capacity state, settlement, health, or delivery statement produced by a Station. Its trust meaning belongs to the caller's own protocol and endpoint model.</dd>
+          <dt>Capacity Profile</dt><dd>A closed set of workload assumptions, hard limits, durability rules, failure model, latency, throughput, fairness, memory, storage, and recovery targets for one deployment shape.</dd>
+          <dt>Protocol Compatibility Plugin</dt><dd>An optional external process that implements one exact external protocol contract and maps it to the Native Station Contract. Absent by default.</dd>
+          </dl>
+
+          <h2 id="core-ownership">Station Core owns the station, not the meaning</h2>
+          <p>The Station Core owns its process lifecycle, configuration, liveness, readiness, graceful shutdown, and deterministic package; the Native Station Contract and direct native client behavior; the native entities listed above; bounded admission, authorization scope, storage, scheduling, fairness, idempotency, deduplication, expiry, retry, cleanup, and backpressure; hard ceilings for requests, bytes, connections, queues, workers, retained state, claims, retries, maintenance, and observation; privacy-minimal metrics and failure classes; and one-member durability, backup, restore, upgrade, rollback, and recovery. After standalone completion it also owns same-Station membership, replication, consistency, fencing, failover, repair, rebalance, and disaster recovery.</p>
+          <p>The Core's public and persistent schemas contain no agent, task, tool, resource, prompt, session, federation, external wire, protocol lifecycle, endpoint identity, or product-specific field.</p>
+
+          <h2 id="instance-before-cluster">Instance first, Cluster later</h2>
+          <p>Delivery order is mandatory: complete the Station Core, then complete and verify one standalone Station Instance, then extend the same native contract into a Station Cluster. Only after native single-node and clustered excellence does an external extension contract arrive, and only then explicitly selected Protocol Compatibility Plugins. Later stages cannot repair or redefine unfinished native behavior.</p>
+
+          <h2 id="deliberately-not">What a Station deliberately is not</h2>
+          <ul>
+          <li>Not an endpoint trust layer or external protocol authority.</li>
+          <li>Not a container for LicoArc, A2A, ACP, or MCP — those are optional external plugin plans, never Core features.</li>
+          <li>Not a federation, agent network, or multi-station fleet; Cluster membership never defines external protocol topology.</li>
+          <li>Not an owner of endpoint keys, encryption, plaintext, identity proof, approval, replay decisions, or final endpoint evidence.</li>
+          </ul>
+          <aside class="note">The current Go source implements a native Station Instance candidate and a partial Cluster consensus foundation; the Native Excellence Gate is not accepted. See <a href="/status/">Where BadTower stands</a>.</aside>
+        </article>
+        <nav class="pager" aria-label="More documentation">
+          <a href="/contract/"><span>Next</span><strong>Contract</strong></a>
+        </nav>
+      </div>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-inner">
+        <a class="foot-home" href="https://lico.land/"><svg class="foot-star" aria-hidden="true"><use href="#star"/></svg>LicoLand</a>
+        <nav class="foot-links" aria-label="LicoLand projects">
+          <a href="https://licoup.com/">LicoUp</a>
+          <a href="https://licoarc.com/">LicoArc</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/status/">Status</a>
+        </nav>
+        <p class="foot-note">Public project information only.</p>
+        <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="Pause motion"><svg class="icon" aria-hidden="true"><use href="#pause" id="motion-icon"/></svg></button>
+      </div>
+    </footer>
+  </body>
+</html>
